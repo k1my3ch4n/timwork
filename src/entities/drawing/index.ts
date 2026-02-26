@@ -24,6 +24,7 @@ export {
   getDisciplineImage,
   getRevisions,
   getChildDrawings,
+  getBreadcrumbPath,
 } from './lib/queries';
 export { useDrawingStore } from './model/useDrawingStore';
 export {
@@ -32,4 +33,5 @@ export {
   useRevisions,
   useDisplayImage,
   useChildDrawings,
+  useBreadcrumb,
 } from './model/selectors';

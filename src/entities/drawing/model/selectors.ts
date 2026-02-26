@@ -4,6 +4,7 @@ import {
   getDisciplineImage,
   getRevisions,
   getChildDrawings,
+  getBreadcrumbPath,
 } from '../lib/queries';
 import { useDrawingStore } from './useDrawingStore';
 
@@ -57,4 +58,10 @@ export function useChildDrawings() {
   const drawing = useSelectedDrawing();
 
   return drawing ? getChildDrawings(metadata, drawing.id) : [];
+}
+
+export function useBreadcrumb() {
+  const id = useDrawingStore((store) => store.selectedDrawingId);
+
+  return id ? getBreadcrumbPath(metadata, id) : [];
 }

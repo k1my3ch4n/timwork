@@ -13,7 +13,7 @@ interface DrawingState {
 }
 
 export const useDrawingStore = create<DrawingState>((set, get) => ({
-  selectedDrawingId: null,
+  selectedDrawingId: '00',
   selectedDiscipline: null,
   selectedRevision: null,
 

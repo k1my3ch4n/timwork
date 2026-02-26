@@ -19,3 +19,5 @@ import Metadata from './model/metadata.json';
 export const metadata = Metadata as unknown as MetadataType;
 
 export { getDrawings, getDisciplineNames, getDisciplineImage, getRevisions } from './lib/queries';
+export { useDrawingStore } from './model/useDrawingStore';
+export { useSelectedDrawing, useDisciplineNames, useRevisions, useDisplayImage } from './model/selectors';

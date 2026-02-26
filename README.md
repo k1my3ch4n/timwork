@@ -12,3 +12,11 @@
 - FSD(Feature-Sliced Design) 디렉토리 구조 적용
 - metadata.json 분석 및 TypeScript 타입 정의
 - 도면 이미지를 public/drawings 로 배치
+
+## Phase 2 : 도면 뷰어 레이아웃 및 상태 관리
+
+- 메인 페이지 레이아웃 구성 (사이드바 + 메인 영역)
+- 도면 목록 사이드바에서 도면 선택 및 이미지 표시
+- 공종(건축, 구조, 소방 등) 탭 전환 기능
+- 리비전 히스토리 탐색 및 이미지 전환
+- Zustand 도입 및 selector 패턴으로 상태 관리 분리

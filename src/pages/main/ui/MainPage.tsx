@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { metadata, getDrawings, getDisciplineNames } from '@entities/drawing';
+import { metadata, getDrawings, getDisciplineNames, getDisciplineImage } from '@entities/drawing';
 
 const drawings = getDrawings(metadata);
 
@@ -7,13 +7,15 @@ export default function MainPage() {
   const [selectedDrawingId, setSelectedDrawingId] = useState<string | null>(null);
   const [selectedDiscipline, setSelectedDiscipline] = useState<string | null>(null);
 
-  const selectedDrawing = selectedDrawingId
-    ? metadata.drawings[selectedDrawingId]
-    : null;
+  const selectedDrawing = selectedDrawingId ? metadata.drawings[selectedDrawingId] : null;
 
-  const disciplineNames = selectedDrawing
-    ? getDisciplineNames(selectedDrawing)
-    : [];
+  const disciplineNames = selectedDrawing ? getDisciplineNames(selectedDrawing) : [];
+
+  const displayImage = selectedDrawing
+    ? selectedDiscipline
+      ? getDisciplineImage(selectedDrawing, selectedDiscipline)
+      : selectedDrawing.image
+    : null;
 
   const handleDrawingClick = (id: string) => {
     setSelectedDrawingId(id);
@@ -23,9 +25,7 @@ export default function MainPage() {
   return (
     <div className="flex h-screen">
       <aside className="w-64 overflow-y-auto border-r border-gray-200 bg-gray-50 p-4">
-        <h2 className="mb-3 text-base font-bold text-gray-800">
-          {metadata.project.name}
-        </h2>
+        <h2 className="mb-3 text-base font-bold text-gray-800">{metadata.project.name}</h2>
 
         <ul className="space-y-1 text-sm">
           {drawings.map((drawing) => (
@@ -62,11 +62,8 @@ export default function MainPage() {
           </nav>
         )}
         <div className="flex-1 overflow-auto p-4">
-          {selectedDrawing ? (
-            <img
-              src={`/drawings/${selectedDrawing.image}`}
-              alt={selectedDrawing.name}
-            />
+          {selectedDrawing && displayImage ? (
+            <img src={`/drawings/${displayImage}`} alt={selectedDrawing.name} />
           ) : (
             <div className="flex h-full items-center justify-center text-gray-400">
               도면을 선택하세요

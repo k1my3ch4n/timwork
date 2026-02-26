@@ -11,3 +11,9 @@ export function getDisciplineNames(drawing: Drawing): string[] {
 
   return Object.keys(drawing.disciplines);
 }
+
+export function getDisciplineImage(drawing: Drawing, disciplineName: string): string {
+  const disciplineData = drawing.disciplines?.[disciplineName];
+
+  return disciplineData?.image ?? drawing.image;
+}

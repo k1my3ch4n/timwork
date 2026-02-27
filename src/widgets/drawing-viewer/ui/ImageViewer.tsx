@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { useDrawingStore, useChildDrawings } from '@entities/drawing';
 import { PolygonOverlay } from '@features/polygon-overlay';
+import ZoomControls from './ZoomControls';
 
 interface ImageViewerProps {
   src: string;
@@ -25,6 +26,7 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
   return (
     <div className="relative h-full">
       <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
+        <ZoomControls />
         <TransformComponent>
           <div className="relative inline-block">
             <img src={src} alt={alt} onLoad={handleImageLoad} />

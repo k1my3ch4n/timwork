@@ -4,12 +4,8 @@ export default function Breadcrumb() {
   const path = useBreadcrumb();
   const selectDrawing = useDrawingStore((store) => store.selectDrawing);
 
-  if (path.length <= 1) {
-    return null;
-  }
-
   return (
-    <nav className="flex items-center gap-1 px-4 py-2 text-sm text-gray-500">
+    <nav className="flex items-center gap-1 border-b border-gray-100 px-4 py-2 text-sm text-gray-500">
       {path.map((item, index) => {
         const isLast = index === path.length - 1;
 

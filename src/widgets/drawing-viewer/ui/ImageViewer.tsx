@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { useDrawingStore, useChildDrawings } from '@entities/drawing';
+import { useDrawingStore, useOverlayStore, useChildDrawings } from '@entities/drawing';
 import { PolygonOverlay } from '@features/polygon-overlay';
 import ZoomControls from './ZoomControls';
+import OverlayImageViewer from './OverlayImageViewer';
 
 interface ImageViewerProps {
   src: string;
@@ -12,6 +13,7 @@ interface ImageViewerProps {
 export default function ImageViewer({ src, alt }: ImageViewerProps) {
   const childDrawings = useChildDrawings();
   const selectDrawing = useDrawingStore((store) => store.selectDrawing);
+  const isOverlayMode = useOverlayStore((store) => store.isOverlayMode);
 
   const [imageSize, setImageSize] = useState<{
     width: number;
@@ -22,6 +24,10 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
     const img = e.currentTarget;
     setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
   };
+
+  if (isOverlayMode) {
+    return <OverlayImageViewer alt={alt} />;
+  }
 
   return (
     <div className="relative h-full">

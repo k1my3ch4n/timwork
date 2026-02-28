@@ -1,0 +1,39 @@
+import type { OverlayRenderLayer } from '@entities/drawing';
+
+interface OverlayControlsProps {
+  layers: OverlayRenderLayer[];
+  onOpacityChange: (disciplineName: string, opacity: number) => void;
+}
+
+export default function OverlayControls({ layers, onOpacityChange }: OverlayControlsProps) {
+  if (layers.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="absolute bottom-4 left-4 z-10 rounded-lg bg-white/90 p-3 shadow-md backdrop-blur-sm">
+      <h3 className="mb-2 text-xs font-semibold text-gray-600">레이어 투명도</h3>
+      <div className="space-y-2">
+        {layers.map((layer) => (
+          <div key={layer.disciplineName} className="flex items-center gap-2">
+            <span className="w-20 truncate text-xs text-gray-700">
+              {layer.isBase && '\u25b6 '}
+              {layer.disciplineName}
+            </span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={Math.round(layer.opacity * 100)}
+              onChange={(e) => onOpacityChange(layer.disciplineName, Number(e.target.value) / 100)}
+              className="h-1 w-24 accent-blue-600"
+            />
+            <span className="w-8 text-right text-xs text-gray-500">
+              {Math.round(layer.opacity * 100)}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

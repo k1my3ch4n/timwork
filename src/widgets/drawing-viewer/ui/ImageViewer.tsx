@@ -37,10 +37,11 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
   }
 
   return (
-    <div className="relative h-full">
+    <div className="flex h-full flex-col">
       <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
-        <ZoomControls />
-        <TransformComponent>
+        <div className="relative flex-1">
+          <ZoomControls />
+          <TransformComponent wrapperClass="h-full">
           <div className="relative inline-block">
             <img src={src} alt={alt} onLoad={handleImageLoad} />
             {imageSize && childDrawings.length > 0 && (
@@ -62,6 +63,7 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
             )}
           </div>
         </TransformComponent>
+        </div>
       </TransformWrapper>
     </div>
   );

@@ -18,10 +18,11 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
   }
 
   return (
-    <div className="relative h-full">
+    <div className="flex h-full flex-col">
       <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
-        <ZoomControls />
-        <TransformComponent>
+        <div className="relative flex-1">
+          <ZoomControls />
+          <TransformComponent wrapperClass="h-full">
           <div className="relative inline-block">
             {overlayRenderData.map((layer) => (
               <img
@@ -44,6 +45,7 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
             ))}
           </div>
         </TransformComponent>
+        </div>
       </TransformWrapper>
       <OverlayControls
         layers={overlayRenderData}

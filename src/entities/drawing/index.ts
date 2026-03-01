@@ -29,6 +29,7 @@ export { useOverlayStore } from './model/useOverlayStore';
 
 export {
   useSelectedDrawing,
+  useSelectedDisciplineData,
   useDisciplineNames,
   useChildDrawings,
   useBreadcrumb,

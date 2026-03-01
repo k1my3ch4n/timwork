@@ -30,10 +30,9 @@ export { useOverlayStore } from './model/useOverlayStore';
 export {
   useSelectedDrawing,
   useDisciplineNames,
-  useRevisions,
-  useDisplayImage,
   useChildDrawings,
   useBreadcrumb,
-  useDisciplinePolygon,
-} from './model/selectors';
+} from './model/drawingSelectors';
+export { useRevisions, useDisplayImage, useRevisionImage } from './model/revisionSelectors';
+export { useDisciplinePolygon } from './model/polygonSelectors';
 export { useOverlayRenderData } from './model/overlaySelectors';

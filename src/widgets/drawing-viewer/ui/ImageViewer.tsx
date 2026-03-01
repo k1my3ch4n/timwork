@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { useDrawingStore, useOverlayStore, useChildDrawings } from '@entities/drawing';
-import { PolygonOverlay } from '@features/polygon-overlay';
+import {
+  useDrawingStore,
+  useOverlayStore,
+  useChildDrawings,
+  useDisciplinePolygon,
+} from '@entities/drawing';
+import { PolygonOverlay, DisciplinePolygonOverlay } from '@features/polygon-overlay';
 import ZoomControls from './ZoomControls';
 import OverlayImageViewer from './OverlayImageViewer';
 
@@ -13,7 +18,9 @@ interface ImageViewerProps {
 export default function ImageViewer({ src, alt }: ImageViewerProps) {
   const childDrawings = useChildDrawings();
   const selectDrawing = useDrawingStore((store) => store.selectDrawing);
+  const selectedDiscipline = useDrawingStore((store) => store.selectedDiscipline);
   const isOverlayMode = useOverlayStore((store) => store.isOverlayMode);
+  const { polygon, regions } = useDisciplinePolygon();
 
   const [imageSize, setImageSize] = useState<{
     width: number;
@@ -42,6 +49,15 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
                 imageWidth={imageSize.width}
                 imageHeight={imageSize.height}
                 onSelect={selectDrawing}
+              />
+            )}
+            {imageSize && selectedDiscipline && (polygon || regions.length > 0) && (
+              <DisciplinePolygonOverlay
+                polygon={polygon}
+                regions={regions}
+                imageWidth={imageSize.width}
+                imageHeight={imageSize.height}
+                disciplineName={selectedDiscipline}
               />
             )}
           </div>

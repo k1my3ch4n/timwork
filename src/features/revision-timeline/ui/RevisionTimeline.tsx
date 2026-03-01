@@ -52,15 +52,17 @@ export default function RevisionTimeline({
                 </div>
                 <p className="mt-0.5 text-xs text-gray-600">{rev.description}</p>
                 <ChangesList changes={rev.changes} />
-                <button
-                  className="mt-1.5 rounded bg-gray-200 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-300"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onCompare(rev.version);
-                  }}
-                >
-                  비교
-                </button>
+                {revisions.length > 1 && (
+                  <button
+                    className="mt-1.5 rounded bg-gray-200 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-300"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCompare(rev.version);
+                    }}
+                  >
+                    비교
+                  </button>
+                )}
               </button>
             </div>
           );

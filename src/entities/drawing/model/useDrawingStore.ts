@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { metadata } from '../index';
-import { getRevisions } from '../lib/disciplineQueries';
+import { getDisciplineNames, getRevisions } from '../lib/disciplineQueries';
 
 interface DrawingState {
   selectedDrawingId: string | null;
@@ -18,7 +18,16 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
   selectedRevision: null,
 
   selectDrawing: (id) => {
-    set({ selectedDrawingId: id, selectedDiscipline: null, selectedRevision: null });
+    const drawing = metadata.drawings[id];
+    const disciplines = drawing ? getDisciplineNames(drawing) : [];
+    const firstDiscipline = disciplines.length > 0 ? disciplines[0] : null;
+    const revisions = drawing && firstDiscipline ? getRevisions(drawing, firstDiscipline) : [];
+
+    set({
+      selectedDrawingId: id,
+      selectedDiscipline: firstDiscipline,
+      selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+    });
   },
 
   selectDiscipline: (name) => {

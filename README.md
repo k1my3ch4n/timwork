@@ -36,3 +36,10 @@
 - 레이어별 투명도(opacity) 슬라이더 (OverlayControls)
 - 오버레이 전용 상태 관리 분리 (useOverlayStore / overlaySelectors)
 - 레이어 미선택 시 빈 상태 안내 화면 (OverlayEmptyState)
+
+## Phase 5 : 공종별 폴리곤 렌더링
+
+- polygon.vertices + polygonTransform 적용하여 도면 위에 공종별 관심 영역 폴리곤 표시
+- queries.ts를 drawingQueries, disciplineQueries, polygonQueries로 분리
+- DisciplinePolygonOverlay 컴포넌트로 공종/region 폴리곤 렌더링
+- hover 시 해당 공종/영역 이름 라벨 표시

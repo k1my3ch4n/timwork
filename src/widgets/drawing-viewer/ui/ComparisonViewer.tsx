@@ -1,8 +1,6 @@
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { useDrawingStore, useRevisions, useRevisionImage } from '@entities/drawing';
-import { RevisionDropdown } from '@features/revision-selector';
 import { ChangesList } from '@shared/ui';
-import ZoomControls from './ZoomControls';
+import ComparisonPanel from './ComparisonPanel';
 
 export default function ComparisonViewer({ alt }: { alt: string }) {
   const revisions = useRevisions();
@@ -15,7 +13,6 @@ export default function ComparisonViewer({ alt }: { alt: string }) {
   const rightImage = useRevisionImage(comparisonRight);
 
   const rightRev = revisions.find((revision) => revision.version === comparisonRight);
-
   const changesDiff = rightRev?.changes ?? [];
 
   return (
@@ -31,55 +28,23 @@ export default function ComparisonViewer({ alt }: { alt: string }) {
       </div>
 
       <div className="flex flex-1 min-h-0">
-        <div className="flex flex-1 flex-col border-r border-gray-200">
-          <div className="flex items-center gap-2 border-b border-gray-100 bg-white px-3 py-1.5">
-            <span className="text-xs font-medium text-gray-500">Left</span>
-            <RevisionDropdown
-              revisions={revisions}
-              selected={comparisonLeft}
-              onSelect={(v) => setComparisonRevision('left', v)}
-            />
-          </div>
-          <TransformWrapper
-            initialScale={1}
-            minScale={0.5}
-            maxScale={4}
-            centerOnInit
-            centerZoomedOut
-          >
-            <div className="relative flex-1">
-              <ZoomControls />
-              <TransformComponent wrapperClass="h-full">
-                {leftImage && <img src={leftImage} alt={`${alt} - ${comparisonLeft}`} />}
-              </TransformComponent>
-            </div>
-          </TransformWrapper>
-        </div>
-
-        <div className="flex flex-1 flex-col">
-          <div className="flex items-center gap-2 border-b border-gray-100 bg-white px-3 py-1.5">
-            <span className="text-xs font-medium text-gray-500">Right</span>
-            <RevisionDropdown
-              revisions={revisions}
-              selected={comparisonRight}
-              onSelect={(v) => setComparisonRevision('right', v)}
-            />
-          </div>
-          <TransformWrapper
-            initialScale={1}
-            minScale={0.5}
-            maxScale={4}
-            centerOnInit
-            centerZoomedOut
-          >
-            <div className="relative flex-1">
-              <ZoomControls />
-              <TransformComponent wrapperClass="h-full">
-                {rightImage && <img src={rightImage} alt={`${alt} - ${comparisonRight}`} />}
-              </TransformComponent>
-            </div>
-          </TransformWrapper>
-        </div>
+        <ComparisonPanel
+          label="Left"
+          revisions={revisions}
+          selected={comparisonLeft}
+          onSelect={(v) => setComparisonRevision('left', v)}
+          imageSrc={leftImage}
+          alt={`${alt} - ${comparisonLeft}`}
+          className="border-r border-gray-200"
+        />
+        <ComparisonPanel
+          label="Right"
+          revisions={revisions}
+          selected={comparisonRight}
+          onSelect={(v) => setComparisonRevision('right', v)}
+          imageSrc={rightImage}
+          alt={`${alt} - ${comparisonRight}`}
+        />
       </div>
 
       {changesDiff.length > 0 && (

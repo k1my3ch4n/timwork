@@ -27,3 +27,12 @@
 - 브레드크럼 네비게이션으로 현재 도면 위치 표시 및 상위 이동
 - react-zoom-pan-pinch 도입으로 도면 확대/축소/드래그 지원
 - 줌 컨트롤 버튼 (확대, 축소, 초기화)
+
+## Phase 4 : 공종별 도면 오버레이
+
+- imageTransform (x, y, scale, rotation) 적용하여 공종 도면을 동일 좌표계에 겹쳐 표시
+- relativeTo 기준 도면 위에 변환을 적용하는 렌더링 로직
+- 오버레이할 공종을 다중 선택할 수 있는 UI (OverlayDisciplineList)
+- 레이어별 투명도(opacity) 슬라이더 (OverlayControls)
+- 오버레이 전용 상태 관리 분리 (useOverlayStore / overlaySelectors)
+- 레이어 미선택 시 빈 상태 안내 화면 (OverlayEmptyState)

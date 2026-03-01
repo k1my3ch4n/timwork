@@ -43,3 +43,11 @@
 - queries.ts를 drawingQueries, disciplineQueries, polygonQueries로 분리
 - DisciplinePolygonOverlay 컴포넌트로 공종/region 폴리곤 렌더링
 - hover 시 해당 공종/영역 이름 라벨 표시
+
+## Phase 6 : 리비전 관리 기능
+
+- 리비전 선택을 위한 RevisionDropdown 컴포넌트 생성 및 오버레이 모드 레이어별 독립 리비전 선택 지원
+- 선택된 공종의 리비전 이력을 타임라인 형태로 표시
+- 같은 공종의 두 리비전을 Side-by-side로 비교하는 ComparisonViewer (좌우 독립 줌/팬)
+- Region 폴리곤 클릭으로 해당 영역의 독립 리비전 타임라인 전환 및 이미지 오버레이
+- 도면/공종 이동 시 비교 모드 및 Region 선택 자동 초기화

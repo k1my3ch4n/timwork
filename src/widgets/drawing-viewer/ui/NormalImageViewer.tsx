@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import {
-  useDrawingStore,
-  useChildDrawings,
-  useDisciplinePolygon,
-  useRevisions,
-} from '@entities/drawing';
+import { useDrawingStore, useChildDrawings, useDisciplinePolygon } from '@entities/drawing';
 import { RevisionTimeline } from '@features/revision-timeline';
 import { PolygonOverlay, DisciplinePolygonOverlay } from '@features/polygon-overlay';
+import { useRevisionTimeline } from '../hooks/useRevisionTimeline';
 import ZoomControls from './ZoomControls';
 
 interface NormalImageViewerProps {
@@ -19,29 +15,17 @@ export default function NormalImageViewer({ src, alt }: NormalImageViewerProps) 
   const childDrawings = useChildDrawings();
   const selectDrawing = useDrawingStore((store) => store.selectDrawing);
   const selectedDiscipline = useDrawingStore((store) => store.selectedDiscipline);
-  const selectedRevision = useDrawingStore((store) => store.selectedRevision);
-  const selectRevision = useDrawingStore((store) => store.selectRevision);
-  const enterComparison = useDrawingStore((store) => store.enterComparison);
-  const revisions = useRevisions();
-  const { polygon, regions } = useDisciplinePolygon();
+  const selectedRegion = useDrawingStore((store) => store.selectedRegion);
+  const selectRegion = useDrawingStore((store) => store.selectRegion);
 
-  const [imageSize, setImageSize] = useState<{
-    width: number;
-    height: number;
-  } | null>(null);
+  const { polygon, regions } = useDisciplinePolygon();
+  const { timelineProps, regionOverlay } = useRevisionTimeline();
+
+  const [imageSize, setImageSize] = useState<{ width: number; height: number } | null>(null);
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
-
     setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
-  };
-
-  const handleCompare = (version: string) => {
-    const left = selectedRevision ?? revisions[revisions.length - 1]?.version;
-
-    if (left) {
-      enterComparison(left, version);
-    }
   };
 
   return (
@@ -53,6 +37,14 @@ export default function NormalImageViewer({ src, alt }: NormalImageViewerProps) 
             <TransformComponent wrapperClass="h-full">
               <div className="relative inline-block">
                 <img src={src} alt={alt} onLoad={handleImageLoad} />
+                {regionOverlay && (
+                  <img
+                    src={regionOverlay.src}
+                    alt={regionOverlay.alt}
+                    className="absolute left-0 top-0"
+                    style={{ transformOrigin: '0 0', transform: regionOverlay.css }}
+                  />
+                )}
                 {imageSize && childDrawings.length > 0 && (
                   <PolygonOverlay
                     children={childDrawings}
@@ -68,6 +60,8 @@ export default function NormalImageViewer({ src, alt }: NormalImageViewerProps) 
                     imageWidth={imageSize.width}
                     imageHeight={imageSize.height}
                     disciplineName={selectedDiscipline}
+                    selectedRegion={selectedRegion}
+                    onRegionSelect={selectRegion}
                   />
                 )}
               </div>
@@ -75,14 +69,7 @@ export default function NormalImageViewer({ src, alt }: NormalImageViewerProps) 
           </div>
         </TransformWrapper>
       </div>
-      {revisions.length > 0 && (
-        <RevisionTimeline
-          revisions={revisions}
-          selected={selectedRevision}
-          onSelect={selectRevision}
-          onCompare={handleCompare}
-        />
-      )}
+      {timelineProps.revisions.length > 0 && <RevisionTimeline {...timelineProps} />}
     </div>
   );
 }

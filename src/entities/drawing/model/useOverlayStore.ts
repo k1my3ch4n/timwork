@@ -9,6 +9,7 @@ interface OverlayState {
   toggleOverlayMode: () => void;
   toggleOverlayDiscipline: (name: string) => void;
   setOverlayOpacity: (disciplineName: string, opacity: number) => void;
+  setLayerRevision: (disciplineName: string, version: string) => void;
   reset: () => void;
 }
 
@@ -40,10 +41,10 @@ export const useOverlayStore = create<OverlayState>((set, get) => ({
 
   toggleOverlayDiscipline: (name) => {
     const { overlayLayers } = get();
-    const exists = overlayLayers.some((l) => l.disciplineName === name);
+    const exists = overlayLayers.some((layer) => layer.disciplineName === name);
 
     if (exists) {
-      set({ overlayLayers: overlayLayers.filter((l) => l.disciplineName !== name) });
+      set({ overlayLayers: overlayLayers.filter((layer) => layer.disciplineName !== name) });
     } else {
       const opacity = overlayLayers.length === 0 ? 1 : 0.5;
       set({ overlayLayers: [...overlayLayers, { disciplineName: name, opacity }] });
@@ -54,8 +55,18 @@ export const useOverlayStore = create<OverlayState>((set, get) => ({
     const { overlayLayers } = get();
 
     set({
-      overlayLayers: overlayLayers.map((l) =>
-        l.disciplineName === disciplineName ? { ...l, opacity } : l,
+      overlayLayers: overlayLayers.map((layer) =>
+        layer.disciplineName === disciplineName ? { ...layer, opacity } : layer,
+      ),
+    });
+  },
+
+  setLayerRevision: (disciplineName, version) => {
+    const { overlayLayers } = get();
+
+    set({
+      overlayLayers: overlayLayers.map((layer) =>
+        layer.disciplineName === disciplineName ? { ...layer, selectedRevision: version } : layer,
       ),
     });
   },

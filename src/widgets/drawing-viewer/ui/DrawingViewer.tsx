@@ -1,5 +1,4 @@
 import { useSelectedDrawing, useDisplayImage } from '@entities/drawing';
-import { RevisionSelector } from '@features/revision-selector';
 import ImageViewer from './ImageViewer';
 
 export default function DrawingViewer() {
@@ -9,8 +8,7 @@ export default function DrawingViewer() {
   const imageSrc = displayImage ? `/drawings/${displayImage}` : null;
 
   return (
-    <div className="relative flex-1 overflow-hidden p-4">
-      <RevisionSelector />
+    <div className="relative flex-1 overflow-hidden">
       {imageSrc ? (
         <ImageViewer src={imageSrc} alt={drawing?.name ?? ''} />
       ) : (

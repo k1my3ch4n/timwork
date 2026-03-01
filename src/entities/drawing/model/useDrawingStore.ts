@@ -1,15 +1,25 @@
 import { create } from 'zustand';
 import { metadata } from '../index';
-import { getRevisions } from '../lib/disciplineQueries';
+import { getDisciplineNames, getRevisions } from '../lib/disciplineQueries';
 
 interface DrawingState {
   selectedDrawingId: string | null;
   selectedDiscipline: string | null;
   selectedRevision: string | null;
 
+  selectedRegion: string | null;
+
+  isComparisonMode: boolean;
+  comparisonLeft: string | null;
+  comparisonRight: string | null;
+
   selectDrawing: (id: string) => void;
   selectDiscipline: (name: string) => void;
   selectRevision: (version: string) => void;
+  selectRegion: (name: string | null) => void;
+  enterComparison: (leftVersion: string, rightVersion: string) => void;
+  exitComparison: () => void;
+  setComparisonRevision: (side: 'left' | 'right', version: string) => void;
 }
 
 export const useDrawingStore = create<DrawingState>((set, get) => ({
@@ -17,8 +27,27 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
   selectedDiscipline: null,
   selectedRevision: null,
 
+  selectedRegion: null,
+
+  isComparisonMode: false,
+  comparisonLeft: null,
+  comparisonRight: null,
+
   selectDrawing: (id) => {
-    set({ selectedDrawingId: id, selectedDiscipline: null, selectedRevision: null });
+    const drawing = metadata.drawings[id];
+    const disciplines = drawing ? getDisciplineNames(drawing) : [];
+    const firstDiscipline = disciplines.length > 0 ? disciplines[0] : null;
+    const revisions = drawing && firstDiscipline ? getRevisions(drawing, firstDiscipline) : [];
+
+    set({
+      selectedDrawingId: id,
+      selectedDiscipline: firstDiscipline,
+      selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+      selectedRegion: null,
+      isComparisonMode: false,
+      comparisonLeft: null,
+      comparisonRight: null,
+    });
   },
 
   selectDiscipline: (name) => {
@@ -26,7 +55,14 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
     const drawing = selectedDrawingId ? metadata.drawings[selectedDrawingId] : null;
 
     if (!drawing) {
-      set({ selectedDiscipline: name, selectedRevision: null });
+      set({
+        selectedDiscipline: name,
+        selectedRevision: null,
+        selectedRegion: null,
+        isComparisonMode: false,
+        comparisonLeft: null,
+        comparisonRight: null,
+      });
       return;
     }
 
@@ -35,10 +71,44 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
     set({
       selectedDiscipline: name,
       selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+      isComparisonMode: false,
+      comparisonLeft: null,
+      comparisonRight: null,
     });
   },
 
   selectRevision: (version) => {
     set({ selectedRevision: version });
+  },
+
+  selectRegion: (name) => {
+    set({ selectedRegion: name });
+  },
+
+  enterComparison: (leftVersion, rightVersion) => {
+    set({
+      isComparisonMode: true,
+      comparisonLeft: leftVersion,
+      comparisonRight: rightVersion,
+      selectedRegion: null,
+    });
+  },
+
+  exitComparison: () => {
+    const { comparisonLeft } = get();
+    set({
+      isComparisonMode: false,
+      selectedRevision: comparisonLeft,
+      comparisonLeft: null,
+      comparisonRight: null,
+    });
+  },
+
+  setComparisonRevision: (side, version) => {
+    if (side === 'left') {
+      set({ comparisonLeft: version });
+    } else {
+      set({ comparisonRight: version });
+    }
   },
 }));

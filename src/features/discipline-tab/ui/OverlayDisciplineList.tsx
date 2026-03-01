@@ -8,7 +8,7 @@ export default function OverlayDisciplineList({ disciplines }: OverlayDiscipline
   const overlayLayers = useOverlayStore((store) => store.overlayLayers);
   const toggleOverlayDiscipline = useOverlayStore((store) => store.toggleOverlayDiscipline);
 
-  const overlayNames = new Set(overlayLayers.map((l) => l.disciplineName));
+  const overlayNames = new Set(overlayLayers.map((layer) => layer.disciplineName));
 
   return (
     <>

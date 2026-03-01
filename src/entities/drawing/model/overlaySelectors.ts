@@ -1,7 +1,7 @@
 import type { OverlayRenderLayer } from '../type';
 import { computeRelativeTransform, toCssTransform } from '../lib/transform';
 import { useOverlayStore } from './useOverlayStore';
-import { useSelectedDrawing } from './selectors';
+import { useSelectedDrawing } from './drawingSelectors';
 
 export function useOverlayRenderData(): OverlayRenderLayer[] {
   const drawing = useSelectedDrawing();
@@ -19,13 +19,20 @@ export function useOverlayRenderData(): OverlayRenderLayer[] {
     const discData = drawing.disciplines![layer.disciplineName];
 
     const revisions = discData?.revisions ?? [];
-    const latestRevision = revisions.length > 0 ? revisions[revisions.length - 1] : null;
-    const imageSrc = latestRevision?.image ?? discData?.image ?? drawing.image;
+
+    const selectedRev = layer.selectedRevision
+      ? revisions.find((revision) => revision.version === layer.selectedRevision)
+      : revisions.length > 0
+        ? revisions[revisions.length - 1]
+        : null;
+
+    const imageSrc = selectedRev?.image ?? discData?.image ?? drawing.image;
 
     let cssTransform = 'none';
+    const layerTransform = selectedRev?.imageTransform ?? discData?.imageTransform;
 
-    if (index > 0 && baseTransform && discData?.imageTransform) {
-      const rel = computeRelativeTransform(baseTransform, discData.imageTransform);
+    if (index > 0 && baseTransform && layerTransform) {
+      const rel = computeRelativeTransform(baseTransform, layerTransform);
       cssTransform = toCssTransform(rel);
     }
 
@@ -35,6 +42,8 @@ export function useOverlayRenderData(): OverlayRenderLayer[] {
       opacity: layer.opacity,
       cssTransform,
       isBase: index === 0,
+      revisions,
+      selectedRevision: selectedRev?.version ?? null,
     };
   });
 }

@@ -69,6 +69,7 @@ export interface Region {
 export interface OverlayLayer {
   disciplineName: string;
   opacity: number;
+  selectedRevision?: string;
 }
 
 export interface OverlayRenderLayer {
@@ -77,4 +78,6 @@ export interface OverlayRenderLayer {
   opacity: number;
   cssTransform: string;
   isBase: boolean;
+  revisions: Revision[];
+  selectedRevision: string | null;
 }

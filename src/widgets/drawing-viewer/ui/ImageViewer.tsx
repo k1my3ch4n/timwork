@@ -42,27 +42,27 @@ export default function ImageViewer({ src, alt }: ImageViewerProps) {
         <div className="relative flex-1">
           <ZoomControls />
           <TransformComponent wrapperClass="h-full">
-          <div className="relative inline-block">
-            <img src={src} alt={alt} onLoad={handleImageLoad} />
-            {imageSize && childDrawings.length > 0 && (
-              <PolygonOverlay
-                children={childDrawings}
-                imageWidth={imageSize.width}
-                imageHeight={imageSize.height}
-                onSelect={selectDrawing}
-              />
-            )}
-            {imageSize && selectedDiscipline && (polygon || regions.length > 0) && (
-              <DisciplinePolygonOverlay
-                polygon={polygon}
-                regions={regions}
-                imageWidth={imageSize.width}
-                imageHeight={imageSize.height}
-                disciplineName={selectedDiscipline}
-              />
-            )}
-          </div>
-        </TransformComponent>
+            <div className="relative inline-block">
+              <img src={src} alt={alt} onLoad={handleImageLoad} />
+              {imageSize && childDrawings.length > 0 && (
+                <PolygonOverlay
+                  children={childDrawings}
+                  imageWidth={imageSize.width}
+                  imageHeight={imageSize.height}
+                  onSelect={selectDrawing}
+                />
+              )}
+              {imageSize && selectedDiscipline && (polygon || regions.length > 0) && (
+                <DisciplinePolygonOverlay
+                  polygon={polygon}
+                  regions={regions}
+                  imageWidth={imageSize.width}
+                  imageHeight={imageSize.height}
+                  disciplineName={selectedDiscipline}
+                />
+              )}
+            </div>
+          </TransformComponent>
         </div>
       </TransformWrapper>
     </div>

@@ -18,35 +18,38 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
-        <div className="relative flex-1">
-          <ZoomControls />
-          <TransformComponent wrapperClass="h-full">
-          <div className="relative inline-block">
-            {overlayRenderData.map((layer) => (
-              <img
-                key={layer.disciplineName}
-                src={layer.imageSrc}
-                alt={`${alt} - ${layer.disciplineName}`}
-                style={{
-                  opacity: layer.opacity,
-                  ...(layer.isBase
-                    ? {}
-                    : {
-                        position: 'absolute' as const,
-                        left: 0,
-                        top: 0,
-                        transformOrigin: '0 0',
-                        transform: layer.cssTransform !== 'none' ? layer.cssTransform : undefined,
-                      }),
-                }}
-              />
-            ))}
+    <div className="flex h-full">
+      <div className="flex flex-1 flex-col">
+        <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
+          <div className="relative flex-1">
+            <ZoomControls />
+            <TransformComponent wrapperClass="h-full">
+              <div className="relative inline-block">
+                {overlayRenderData.map((layer) => (
+                  <img
+                    key={layer.disciplineName}
+                    src={layer.imageSrc}
+                    alt={`${alt} - ${layer.disciplineName}`}
+                    style={{
+                      opacity: layer.opacity,
+                      ...(layer.isBase
+                        ? {}
+                        : {
+                            position: 'absolute' as const,
+                            left: 0,
+                            top: 0,
+                            transformOrigin: '0 0',
+                            transform:
+                              layer.cssTransform !== 'none' ? layer.cssTransform : undefined,
+                          }),
+                    }}
+                  />
+                ))}
+              </div>
+            </TransformComponent>
           </div>
-        </TransformComponent>
-        </div>
-      </TransformWrapper>
+        </TransformWrapper>
+      </div>
       <OverlayControls
         layers={overlayRenderData}
         onOpacityChange={setOverlayOpacity}

@@ -8,7 +8,7 @@ export default function DrawingViewer() {
   const imageSrc = displayImage ? `/drawings/${displayImage}` : null;
 
   return (
-    <div className="relative flex-1 overflow-hidden p-4">
+    <div className="relative flex-1 overflow-hidden">
       {imageSrc ? (
         <ImageViewer src={imageSrc} alt={drawing?.name ?? ''} />
       ) : (

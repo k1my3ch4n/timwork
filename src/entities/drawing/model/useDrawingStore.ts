@@ -7,6 +7,8 @@ interface DrawingState {
   selectedDiscipline: string | null;
   selectedRevision: string | null;
 
+  selectedRegion: string | null;
+
   isComparisonMode: boolean;
   comparisonLeft: string | null;
   comparisonRight: string | null;
@@ -14,6 +16,7 @@ interface DrawingState {
   selectDrawing: (id: string) => void;
   selectDiscipline: (name: string) => void;
   selectRevision: (version: string) => void;
+  selectRegion: (name: string | null) => void;
   enterComparison: (leftVersion: string, rightVersion: string) => void;
   exitComparison: () => void;
   setComparisonRevision: (side: 'left' | 'right', version: string) => void;
@@ -23,6 +26,8 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
   selectedDrawingId: '00',
   selectedDiscipline: null,
   selectedRevision: null,
+
+  selectedRegion: null,
 
   isComparisonMode: false,
   comparisonLeft: null,
@@ -38,6 +43,7 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
       selectedDrawingId: id,
       selectedDiscipline: firstDiscipline,
       selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+      selectedRegion: null,
       isComparisonMode: false,
       comparisonLeft: null,
       comparisonRight: null,
@@ -52,6 +58,7 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
       set({
         selectedDiscipline: name,
         selectedRevision: null,
+        selectedRegion: null,
         isComparisonMode: false,
         comparisonLeft: null,
         comparisonRight: null,
@@ -74,11 +81,16 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
     set({ selectedRevision: version });
   },
 
+  selectRegion: (name) => {
+    set({ selectedRegion: name });
+  },
+
   enterComparison: (leftVersion, rightVersion) => {
     set({
       isComparisonMode: true,
       comparisonLeft: leftVersion,
       comparisonRight: rightVersion,
+      selectedRegion: null,
     });
   },
 

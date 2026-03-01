@@ -33,6 +33,13 @@ export {
   useChildDrawings,
   useBreadcrumb,
 } from './model/drawingSelectors';
-export { useRevisions, useDisplayImage, useRevisionImage } from './model/revisionSelectors';
+
+export {
+  useRevisions,
+  useRegionRevisions,
+  useDisplayImage,
+  useRevisionImage,
+} from './model/revisionSelectors';
+
 export { useDisciplinePolygon } from './model/polygonSelectors';
 export { useOverlayRenderData } from './model/overlaySelectors';

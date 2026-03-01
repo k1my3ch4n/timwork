@@ -1,3 +1,4 @@
+import type { Revision } from '../type';
 import { getDisciplineImage, getRevisions } from '../lib/disciplineQueries';
 import { useDrawingStore } from './useDrawingStore';
 import { useSelectedDrawing } from './drawingSelectors';
@@ -34,6 +35,18 @@ export function useDisplayImage() {
   }
 
   return drawing.image;
+}
+
+export function useRegionRevisions(): Revision[] {
+  const drawing = useSelectedDrawing();
+  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const selectedRegion = useDrawingStore((store) => store.selectedRegion);
+
+  if (!drawing || !discipline || !selectedRegion) {
+    return [];
+  }
+
+  return drawing.disciplines?.[discipline]?.regions?.[selectedRegion]?.revisions ?? [];
 }
 
 export function useRevisionImage(version: string | null) {

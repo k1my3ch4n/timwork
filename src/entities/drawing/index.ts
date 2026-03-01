@@ -34,5 +34,6 @@ export {
   useDisplayImage,
   useChildDrawings,
   useBreadcrumb,
+  useDisciplinePolygon,
 } from './model/selectors';
 export { useOverlayRenderData } from './model/overlaySelectors';

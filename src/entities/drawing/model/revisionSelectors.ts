@@ -49,6 +49,33 @@ export function useRegionRevisions(): Revision[] {
   return drawing.disciplines?.[discipline]?.regions?.[selectedRegion]?.revisions ?? [];
 }
 
+export function useComparisonChanges(): { changes: string[]; label: string } | null {
+  const revisions = useRevisions();
+  const comparisonLeft = useDrawingStore((store) => store.comparisonLeft);
+  const comparisonRight = useDrawingStore((store) => store.comparisonRight);
+
+  const leftIndex = revisions.findIndex((revision) => revision.version === comparisonLeft);
+  const rightIndex = revisions.findIndex((revision) => revision.version === comparisonRight);
+
+  if (leftIndex < 0 || rightIndex < 0) return null;
+
+  const [olderIndex, newerIndex] =
+    leftIndex <= rightIndex ? [leftIndex, rightIndex] : [rightIndex, leftIndex];
+
+  const changes = revisions
+    .slice(olderIndex + 1, newerIndex + 1)
+    .flatMap((revision) => revision.changes);
+
+  if (changes.length === 0) {
+    return null;
+  }
+
+  return {
+    changes,
+    label: `${revisions[olderIndex].version} → ${revisions[newerIndex].version} 변경사항`,
+  };
+}
+
 export function useRevisionImage(version: string | null) {
   const drawing = useSelectedDrawing();
   const discipline = useDrawingStore((store) => store.selectedDiscipline);

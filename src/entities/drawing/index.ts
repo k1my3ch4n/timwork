@@ -37,6 +37,7 @@ export {
 export {
   useRevisions,
   useRegionRevisions,
+  useComparisonChanges,
   useDisplayImage,
   useRevisionImage,
 } from './model/revisionSelectors';

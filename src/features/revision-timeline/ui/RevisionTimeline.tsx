@@ -6,6 +6,9 @@ interface RevisionTimelineProps {
   selected: string | null;
   onSelect: (version: string) => void;
   onCompare: (version: string) => void;
+  title?: string;
+  showCompare?: boolean;
+  onClose?: () => void;
 }
 
 export default function RevisionTimeline({
@@ -13,13 +16,24 @@ export default function RevisionTimeline({
   selected,
   onSelect,
   onCompare,
+  title = '리비전 이력',
+  showCompare = true,
+  onClose,
 }: RevisionTimelineProps) {
   if (revisions.length === 0) {
     return null;
   }
 
   return (
-    <SidePanel title="리비전 이력">
+    <SidePanel title={title}>
+      {onClose && (
+        <button
+          className="mb-2 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700"
+          onClick={onClose}
+        >
+          ← 전체 리비전으로 돌아가기
+        </button>
+      )}
       <div className="space-y-2">
         {revisions.map((rev, index) => {
           const isSelected = rev.version === selected;
@@ -52,7 +66,7 @@ export default function RevisionTimeline({
                 </div>
                 <p className="mt-0.5 text-xs text-gray-600">{rev.description}</p>
                 <ChangesList changes={rev.changes} />
-                {revisions.length > 1 && (
+                {showCompare && revisions.length > 1 && (
                   <button
                     className="mt-1.5 rounded bg-gray-200 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-300"
                     onClick={(e) => {

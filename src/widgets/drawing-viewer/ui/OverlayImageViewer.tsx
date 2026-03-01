@@ -1,6 +1,7 @@
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { useOverlayStore, useOverlayRenderData } from '@entities/drawing';
 import { OverlayControls } from '@features/overlay-controls';
+import OverlayEmptyState from './OverlayEmptyState';
 import ZoomControls from './ZoomControls';
 
 interface OverlayImageViewerProps {
@@ -12,7 +13,7 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
   const setOverlayOpacity = useOverlayStore((store) => store.setOverlayOpacity);
 
   if (overlayRenderData.length === 0) {
-    return null;
+    return <OverlayEmptyState />;
   }
 
   return (

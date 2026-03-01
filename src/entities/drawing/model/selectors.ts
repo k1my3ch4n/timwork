@@ -1,11 +1,6 @@
 import { metadata } from '../index';
-import {
-  getDisciplineNames,
-  getDisciplineImage,
-  getRevisions,
-  getChildDrawings,
-  getBreadcrumbPath,
-} from '../lib/queries';
+import { getChildDrawings, getBreadcrumbPath } from '../lib/drawingQueries';
+import { getDisciplineNames, getDisciplineImage, getRevisions } from '../lib/disciplineQueries';
 import { useDrawingStore } from './useDrawingStore';
 
 export function useSelectedDrawing() {

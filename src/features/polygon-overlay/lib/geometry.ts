@@ -3,6 +3,10 @@ export function toSvgPoints(vertices: [number, number][]): string {
 }
 
 export function getCentroid(vertices: [number, number][]): { x: number; y: number } {
+  if (vertices.length === 0) {
+    return { x: 0, y: 0 };
+  }
+
   const x = vertices.reduce((sum, [vx]) => sum + vx, 0) / vertices.length;
   const y = vertices.reduce((sum, [, vy]) => sum + vy, 0) / vertices.length;
 

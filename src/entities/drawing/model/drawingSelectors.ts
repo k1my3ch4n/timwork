@@ -26,3 +26,10 @@ export function useBreadcrumb() {
 
   return id ? getBreadcrumbPath(metadata, id) : [];
 }
+
+export function useSelectedDisciplineData() {
+  const drawing = useSelectedDrawing();
+  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+
+  return { drawing, discipline };
+}

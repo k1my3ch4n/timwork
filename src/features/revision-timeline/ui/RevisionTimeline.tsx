@@ -19,7 +19,7 @@ export default function RevisionTimeline({
   }
 
   return (
-    <SidePanel title="리비전 이력" width="w-64">
+    <SidePanel title="리비전 이력">
       <div className="space-y-2">
         {revisions.map((rev, index) => {
           const isSelected = rev.version === selected;

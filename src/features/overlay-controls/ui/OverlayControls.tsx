@@ -1,5 +1,6 @@
 import type { OverlayRenderLayer } from '@entities/drawing';
 import { RevisionDropdown } from '@features/revision-selector';
+import { SidePanel } from '@shared/ui';
 
 interface OverlayControlsProps {
   layers: OverlayRenderLayer[];
@@ -17,8 +18,7 @@ export default function OverlayControls({
   }
 
   return (
-    <div className="w-56 shrink-0 overflow-y-auto border-l border-gray-200 bg-gray-50 p-3">
-      <h3 className="mb-3 text-xs font-semibold text-gray-500">레이어 컨트롤</h3>
+    <SidePanel title="레이어 컨트롤">
       <div className="space-y-3">
         {layers.map((layer) => (
           <div key={layer.disciplineName} className="space-y-1.5">
@@ -57,6 +57,6 @@ export default function OverlayControls({
           </div>
         ))}
       </div>
-    </div>
+    </SidePanel>
   );
 }

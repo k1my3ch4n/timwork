@@ -1,11 +1,10 @@
 import type { Revision } from '../type';
 import { getDisciplineImage, getRevisions } from '../lib/disciplineQueries';
 import { useDrawingStore } from './useDrawingStore';
-import { useSelectedDrawing } from './drawingSelectors';
+import { useSelectedDisciplineData } from './drawingSelectors';
 
 export function useRevisions() {
-  const drawing = useSelectedDrawing();
-  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const { drawing, discipline } = useSelectedDisciplineData();
 
   if (!drawing || !discipline) {
     return [];
@@ -15,8 +14,7 @@ export function useRevisions() {
 }
 
 export function useDisplayImage() {
-  const drawing = useSelectedDrawing();
-  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const { drawing, discipline } = useSelectedDisciplineData();
   const revision = useDrawingStore((store) => store.selectedRevision);
 
   if (!drawing) {
@@ -38,8 +36,7 @@ export function useDisplayImage() {
 }
 
 export function useRegionRevisions(): Revision[] {
-  const drawing = useSelectedDrawing();
-  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const { drawing, discipline } = useSelectedDisciplineData();
   const selectedRegion = useDrawingStore((store) => store.selectedRegion);
 
   if (!drawing || !discipline || !selectedRegion) {
@@ -77,8 +74,7 @@ export function useComparisonChanges(): { changes: string[]; label: string } | n
 }
 
 export function useRevisionImage(version: string | null) {
-  const drawing = useSelectedDrawing();
-  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const { drawing, discipline } = useSelectedDisciplineData();
 
   if (!drawing || !discipline || !version) {
     return null;

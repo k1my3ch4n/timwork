@@ -11,10 +11,12 @@ export function computeRelativeTransform(
   base: ImageTransform,
   overlay: ImageTransform,
 ): RelativeTransform {
+  const baseScale = base.scale || 1;
+
   return {
     dx: overlay.x - base.x,
     dy: overlay.y - base.y,
-    scale: overlay.scale / base.scale,
+    scale: overlay.scale / baseScale,
     rotation: overlay.rotation - base.rotation,
   };
 }

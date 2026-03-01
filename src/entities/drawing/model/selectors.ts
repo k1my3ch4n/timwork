@@ -1,11 +1,7 @@
 import { metadata } from '../index';
-import {
-  getDisciplineNames,
-  getDisciplineImage,
-  getRevisions,
-  getChildDrawings,
-  getBreadcrumbPath,
-} from '../lib/queries';
+import { getChildDrawings, getBreadcrumbPath } from '../lib/drawingQueries';
+import { getDisciplineNames, getDisciplineImage, getRevisions } from '../lib/disciplineQueries';
+import { getDisciplinePolygon, getRegionPolygons } from '../lib/polygonQueries';
 import { useDrawingStore } from './useDrawingStore';
 
 export function useSelectedDrawing() {
@@ -64,4 +60,18 @@ export function useBreadcrumb() {
   const id = useDrawingStore((store) => store.selectedDrawingId);
 
   return id ? getBreadcrumbPath(metadata, id) : [];
+}
+
+export function useDisciplinePolygon() {
+  const drawing = useSelectedDrawing();
+  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+
+  if (!drawing || !discipline) {
+    return { polygon: null, regions: [] };
+  }
+
+  return {
+    polygon: getDisciplinePolygon(drawing, discipline),
+    regions: getRegionPolygons(drawing, discipline),
+  };
 }

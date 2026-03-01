@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { metadata } from '../index';
-import { getRevisions } from '../lib/queries';
+import { getRevisions } from '../lib/disciplineQueries';
 
 interface DrawingState {
   selectedDrawingId: string | null;

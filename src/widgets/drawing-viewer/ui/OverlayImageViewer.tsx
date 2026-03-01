@@ -11,6 +11,7 @@ interface OverlayImageViewerProps {
 export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
   const overlayRenderData = useOverlayRenderData();
   const setOverlayOpacity = useOverlayStore((store) => store.setOverlayOpacity);
+  const setLayerRevision = useOverlayStore((store) => store.setLayerRevision);
 
   if (overlayRenderData.length === 0) {
     return <OverlayEmptyState />;
@@ -44,7 +45,11 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
           </div>
         </TransformComponent>
       </TransformWrapper>
-      <OverlayControls layers={overlayRenderData} onOpacityChange={setOverlayOpacity} />
+      <OverlayControls
+        layers={overlayRenderData}
+        onOpacityChange={setOverlayOpacity}
+        onRevisionChange={setLayerRevision}
+      />
     </div>
   );
 }

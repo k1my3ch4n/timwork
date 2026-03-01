@@ -1,5 +1,6 @@
 import { useDrawingStore, useOverlayStore, useDisciplineNames } from '@entities/drawing';
 import { RevisionSelector } from '@features/revision-selector';
+import DisciplineButton from './DisciplineButton';
 import OverlayDisciplineList from './OverlayDisciplineList';
 
 export default function DisciplineTab() {
@@ -20,17 +21,12 @@ export default function DisciplineTab() {
       ) : (
         <>
           {disciplines.map((name) => (
-            <button
+            <DisciplineButton
               key={name}
-              className={`rounded px-3 py-1 text-sm transition-colors ${
-                selected === name
-                  ? 'bg-blue-600 text-white font-semibold'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
+              name={name}
+              active={selected === name}
               onClick={() => selectDiscipline(name)}
-            >
-              {name}
-            </button>
+            />
           ))}
           <RevisionSelector />
         </>

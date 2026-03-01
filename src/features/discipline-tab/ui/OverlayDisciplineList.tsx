@@ -1,4 +1,5 @@
 import { useOverlayStore } from '@entities/drawing';
+import DisciplineButton from './DisciplineButton';
 
 interface OverlayDisciplineListProps {
   disciplines: string[];
@@ -16,18 +17,13 @@ export default function OverlayDisciplineList({ disciplines }: OverlayDiscipline
         const isActive = overlayNames.has(name);
 
         return (
-          <button
+          <DisciplineButton
             key={name}
-            className={`rounded px-3 py-1 text-sm transition-colors ${
-              isActive
-                ? 'bg-blue-600 text-white font-semibold'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
+            name={name}
+            active={isActive}
+            prefix={isActive ? '✔ ' : undefined}
             onClick={() => toggleOverlayDiscipline(name)}
-          >
-            {isActive && '\u2713 '}
-            {name}
-          </button>
+          />
         );
       })}
     </>

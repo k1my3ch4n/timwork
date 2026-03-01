@@ -1,7 +1,7 @@
 import type { OverlayRenderLayer } from '../type';
 import { computeRelativeTransform, toCssTransform } from '../lib/transform';
 import { useOverlayStore } from './useOverlayStore';
-import { useSelectedDrawing } from './selectors';
+import { useSelectedDrawing } from './drawingSelectors';
 
 export function useOverlayRenderData(): OverlayRenderLayer[] {
   const drawing = useSelectedDrawing();

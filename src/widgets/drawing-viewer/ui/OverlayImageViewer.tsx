@@ -1,0 +1,50 @@
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { useOverlayStore, useOverlayRenderData } from '@entities/drawing';
+import { OverlayControls } from '@features/overlay-controls';
+import OverlayEmptyState from './OverlayEmptyState';
+import ZoomControls from './ZoomControls';
+
+interface OverlayImageViewerProps {
+  alt: string;
+}
+
+export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
+  const overlayRenderData = useOverlayRenderData();
+  const setOverlayOpacity = useOverlayStore((store) => store.setOverlayOpacity);
+
+  if (overlayRenderData.length === 0) {
+    return <OverlayEmptyState />;
+  }
+
+  return (
+    <div className="relative h-full">
+      <TransformWrapper initialScale={1} minScale={0.5} maxScale={4} centerOnInit centerZoomedOut>
+        <ZoomControls />
+        <TransformComponent>
+          <div className="relative inline-block">
+            {overlayRenderData.map((layer) => (
+              <img
+                key={layer.disciplineName}
+                src={layer.imageSrc}
+                alt={`${alt} - ${layer.disciplineName}`}
+                style={{
+                  opacity: layer.opacity,
+                  ...(layer.isBase
+                    ? {}
+                    : {
+                        position: 'absolute' as const,
+                        left: 0,
+                        top: 0,
+                        transformOrigin: '0 0',
+                        transform: layer.cssTransform !== 'none' ? layer.cssTransform : undefined,
+                      }),
+                }}
+              />
+            ))}
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
+      <OverlayControls layers={overlayRenderData} onOpacityChange={setOverlayOpacity} />
+    </div>
+  );
+}

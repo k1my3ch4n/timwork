@@ -10,6 +10,8 @@ export type {
   Discipline,
   Project,
   Metadata,
+  OverlayLayer,
+  OverlayRenderLayer,
 } from './type';
 
 import type { Metadata as MetadataType } from './type';
@@ -26,7 +28,10 @@ export {
   getChildDrawings,
   getBreadcrumbPath,
 } from './lib/queries';
+
 export { useDrawingStore } from './model/useDrawingStore';
+export { useOverlayStore } from './model/useOverlayStore';
+
 export {
   useSelectedDrawing,
   useDisciplineNames,
@@ -35,3 +40,4 @@ export {
   useChildDrawings,
   useBreadcrumb,
 } from './model/selectors';
+export { useOverlayRenderData } from './model/overlaySelectors';

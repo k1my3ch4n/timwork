@@ -65,3 +65,16 @@ export interface Region {
   polygon: Polygon;
   revisions: Revision[];
 }
+
+export interface OverlayLayer {
+  disciplineName: string;
+  opacity: number;
+}
+
+export interface OverlayRenderLayer {
+  disciplineName: string;
+  imageSrc: string;
+  opacity: number;
+  cssTransform: string;
+  isBase: boolean;
+}

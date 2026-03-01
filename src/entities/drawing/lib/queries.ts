@@ -26,6 +26,10 @@ export function getBreadcrumbPath(
 
   const parent = metadata.drawings[drawing.parent];
 
+  if (!parent) {
+    return [{ id: drawing.id, name: drawing.name }];
+  }
+
   return [
     { id: parent.id, name: parent.name },
     { id: drawing.id, name: drawing.name },

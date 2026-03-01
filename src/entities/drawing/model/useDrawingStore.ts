@@ -7,15 +7,26 @@ interface DrawingState {
   selectedDiscipline: string | null;
   selectedRevision: string | null;
 
+  isComparisonMode: boolean;
+  comparisonLeft: string | null;
+  comparisonRight: string | null;
+
   selectDrawing: (id: string) => void;
   selectDiscipline: (name: string) => void;
   selectRevision: (version: string) => void;
+  enterComparison: (leftVersion: string, rightVersion: string) => void;
+  exitComparison: () => void;
+  setComparisonRevision: (side: 'left' | 'right', version: string) => void;
 }
 
 export const useDrawingStore = create<DrawingState>((set, get) => ({
   selectedDrawingId: '00',
   selectedDiscipline: null,
   selectedRevision: null,
+
+  isComparisonMode: false,
+  comparisonLeft: null,
+  comparisonRight: null,
 
   selectDrawing: (id) => {
     const drawing = metadata.drawings[id];
@@ -27,6 +38,9 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
       selectedDrawingId: id,
       selectedDiscipline: firstDiscipline,
       selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+      isComparisonMode: false,
+      comparisonLeft: null,
+      comparisonRight: null,
     });
   },
 
@@ -35,7 +49,13 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
     const drawing = selectedDrawingId ? metadata.drawings[selectedDrawingId] : null;
 
     if (!drawing) {
-      set({ selectedDiscipline: name, selectedRevision: null });
+      set({
+        selectedDiscipline: name,
+        selectedRevision: null,
+        isComparisonMode: false,
+        comparisonLeft: null,
+        comparisonRight: null,
+      });
       return;
     }
 
@@ -44,10 +64,39 @@ export const useDrawingStore = create<DrawingState>((set, get) => ({
     set({
       selectedDiscipline: name,
       selectedRevision: revisions.length > 0 ? revisions[revisions.length - 1].version : null,
+      isComparisonMode: false,
+      comparisonLeft: null,
+      comparisonRight: null,
     });
   },
 
   selectRevision: (version) => {
     set({ selectedRevision: version });
+  },
+
+  enterComparison: (leftVersion, rightVersion) => {
+    set({
+      isComparisonMode: true,
+      comparisonLeft: leftVersion,
+      comparisonRight: rightVersion,
+    });
+  },
+
+  exitComparison: () => {
+    const { comparisonLeft } = get();
+    set({
+      isComparisonMode: false,
+      selectedRevision: comparisonLeft,
+      comparisonLeft: null,
+      comparisonRight: null,
+    });
+  },
+
+  setComparisonRevision: (side, version) => {
+    if (side === 'left') {
+      set({ comparisonLeft: version });
+    } else {
+      set({ comparisonRight: version });
+    }
   },
 }));

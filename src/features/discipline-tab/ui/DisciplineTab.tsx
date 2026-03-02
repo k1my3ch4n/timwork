@@ -1,5 +1,4 @@
 import { useDrawingStore, useOverlayStore, useDisciplineNames } from '@entities/drawing';
-import { RevisionSelector } from '@features/revision-selector';
 import DisciplineButton from './DisciplineButton';
 import OverlayDisciplineList from './OverlayDisciplineList';
 
@@ -19,17 +18,14 @@ export default function DisciplineTab() {
       {isOverlayMode ? (
         <OverlayDisciplineList disciplines={disciplines} />
       ) : (
-        <>
-          {disciplines.map((name) => (
-            <DisciplineButton
-              key={name}
-              name={name}
-              active={selected === name}
-              onClick={() => selectDiscipline(name)}
-            />
-          ))}
-          <RevisionSelector />
-        </>
+        disciplines.map((name) => (
+          <DisciplineButton
+            key={name}
+            name={name}
+            active={selected === name}
+            onClick={() => selectDiscipline(name)}
+          />
+        ))
       )}
 
       <button

@@ -21,7 +21,7 @@ export default function OverlayDisciplineList({ disciplines }: OverlayDiscipline
             key={name}
             name={name}
             active={isActive}
-            prefix={isActive ? '✔ ' : undefined}
+            prefix={isActive ? '✔ ' : ''}
             onClick={() => toggleOverlayDiscipline(name)}
           />
         );

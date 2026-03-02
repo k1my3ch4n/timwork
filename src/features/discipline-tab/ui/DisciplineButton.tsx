@@ -5,13 +5,16 @@ interface DisciplineButtonProps {
   prefix?: string;
 }
 
-export default function DisciplineButton({ name, active, onClick, prefix }: DisciplineButtonProps) {
+export default function DisciplineButton({
+  name,
+  active,
+  onClick,
+  prefix = '',
+}: DisciplineButtonProps) {
   return (
     <button
       className={`rounded px-3 py-1 text-sm transition-colors ${
-        active
-          ? 'bg-blue-600 text-white font-semibold'
-          : 'bg-white text-gray-700 hover:bg-gray-100'
+        active ? 'bg-blue-600 text-white font-semibold' : 'bg-white text-gray-700 hover:bg-gray-100'
       }`}
       onClick={onClick}
     >

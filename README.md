@@ -1,6 +1,36 @@
-# Timwork 과제
+# Timwork 도면 뷰어
 
-## Phase 0 : 프로젝트 초기 세팅
+건설 프로젝트의 도면을 탐색하고, 공종별 오버레이 비교 및 리비전 관리를 수행할 수 있는 웹 기반 도면 뷰어입니다.
+
+## 실행 방법
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
+npm run build
+```
+
+## 기술 스택
+
+| 분류      | 기술                        |
+| --------- | --------------------------- |
+| Framework | React 19 + TypeScript       |
+| Build     | Vite 7                      |
+| Styling   | Tailwind CSS v4             |
+| 상태 관리 | Zustand 5                   |
+| 도면 조작 | react-zoom-pan-pinch        |
+| 아키텍처  | Feature-Sliced Design (FSD) |
+
+---
+
+## 구현 과정
+
+### Phase 0 : 프로젝트 초기 세팅
 
 - Vite + React + TypeScript 프로젝트 생성
 - Tailwind CSS v4 설치 및 Vite 플러그인 연동
@@ -60,3 +90,7 @@
 - 조건문 헬퍼 추가
 - useRevisionTimeline 내 중첩 삼항연산자를 early return 패턴으로 개선
 - 비교 모드에서 오버레이 모드 전환 시 상태 충돌 버그 수정
+
+## Phase 8 : 문서화 작업
+
+- README.md , DESIGN.md 업데이트

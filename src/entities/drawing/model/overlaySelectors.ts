@@ -1,7 +1,33 @@
-import type { OverlayRenderLayer } from '../type';
+import type {
+  Revision,
+  ImageTransform,
+  DisciplineData,
+  OverlayLayer,
+  OverlayRenderLayer,
+} from '../type';
 import { computeRelativeTransform, toCssTransform } from '../lib/transform';
 import { useOverlayStore } from './useOverlayStore';
 import { useSelectedDrawing } from './drawingSelectors';
+
+function resolveLayerRevision(layer: OverlayLayer, revisions: Revision[]): Revision | null {
+  if (layer.selectedRevision) {
+    return revisions.find((rev) => rev.version === layer.selectedRevision) ?? null;
+  }
+
+  return revisions.length > 0 ? revisions[revisions.length - 1] : null;
+}
+
+function resolveLayerCssTransform(
+  layerTransform: ImageTransform | undefined,
+  baseTransform: ImageTransform | undefined,
+  isBase: boolean,
+): string {
+  if (isBase || !baseTransform || !layerTransform) {
+    return 'none';
+  }
+
+  return toCssTransform(computeRelativeTransform(baseTransform, layerTransform));
+}
 
 export function useOverlayRenderData(): OverlayRenderLayer[] {
   const drawing = useSelectedDrawing();
@@ -11,30 +37,18 @@ export function useOverlayRenderData(): OverlayRenderLayer[] {
     return [];
   }
 
-  const baseLayer = overlayLayers[0];
-  const baseData = drawing.disciplines[baseLayer.disciplineName];
-  const baseTransform = baseData?.imageTransform;
+  const baseTransform = drawing.disciplines[overlayLayers[0].disciplineName]?.imageTransform;
 
   return overlayLayers.map((layer, index) => {
-    const discData = drawing.disciplines![layer.disciplineName];
-
+    const discData: DisciplineData | undefined = drawing.disciplines![layer.disciplineName];
     const revisions = discData?.revisions ?? [];
-
-    const selectedRev = layer.selectedRevision
-      ? revisions.find((revision) => revision.version === layer.selectedRevision)
-      : revisions.length > 0
-        ? revisions[revisions.length - 1]
-        : null;
-
+    const selectedRev = resolveLayerRevision(layer, revisions);
     const imageSrc = selectedRev?.image ?? discData?.image ?? drawing.image;
-
-    let cssTransform = 'none';
-    const layerTransform = selectedRev?.imageTransform ?? discData?.imageTransform;
-
-    if (index > 0 && baseTransform && layerTransform) {
-      const rel = computeRelativeTransform(baseTransform, layerTransform);
-      cssTransform = toCssTransform(rel);
-    }
+    const cssTransform = resolveLayerCssTransform(
+      selectedRev?.imageTransform ?? discData?.imageTransform,
+      baseTransform,
+      index === 0,
+    );
 
     return {
       disciplineName: layer.disciplineName,

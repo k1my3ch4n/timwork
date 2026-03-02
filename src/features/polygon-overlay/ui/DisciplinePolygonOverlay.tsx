@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Polygon } from '@entities/drawing';
 import { toSvgPoints, toSvgTransform } from '../lib/geometry';
 import PolygonLabel from './PolygonLabel';
+import RegionPolygon from './RegionPolygon';
 
 const REGION_COLORS = ['rgba(234, 88, 12, 0.6)', 'rgba(22, 163, 74, 0.6)'];
 
@@ -54,32 +55,17 @@ export default function DisciplinePolygonOverlay({
         </g>
       )}
 
-      {regions.map((region, index) => {
-        const color = REGION_COLORS[index % REGION_COLORS.length];
-        const isSelected = selectedRegion === region.name;
-        const isHovered = hoveredId === region.name;
-
-        return (
-          <g key={region.name} transform={toSvgTransform(region.polygon.polygonTransform)}>
-            <polygon
-              points={toSvgPoints(region.polygon.vertices)}
-              className="cursor-pointer transition-all duration-200"
-              fill={isSelected || isHovered ? color : 'transparent'}
-              stroke={color}
-              strokeWidth={isSelected ? 4 : isHovered ? 3 : 2}
-              onMouseEnter={() => setHoveredId(region.name)}
-              onMouseLeave={() => setHoveredId(null)}
-              onClick={(e) => {
-                e.stopPropagation();
-                onRegionSelect?.(isSelected ? null : region.name);
-              }}
-            />
-            {(isSelected || isHovered) && (
-              <PolygonLabel vertices={region.polygon.vertices} name={`Region ${region.name}`} />
-            )}
-          </g>
-        );
-      })}
+      {regions.map((region, index) => (
+        <RegionPolygon
+          key={region.name}
+          region={region}
+          color={REGION_COLORS[index % REGION_COLORS.length]}
+          isSelected={selectedRegion === region.name}
+          isHovered={hoveredId === region.name}
+          onHover={(hovered) => setHoveredId(hovered ? region.name : null)}
+          onSelect={() => onRegionSelect?.(selectedRegion === region.name ? null : region.name)}
+        />
+      ))}
     </svg>
   );
 }

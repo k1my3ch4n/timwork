@@ -29,6 +29,7 @@ export { useOverlayStore } from './model/useOverlayStore';
 
 export {
   useSelectedDrawing,
+  useSelectedDisciplineData,
   useDisciplineNames,
   useChildDrawings,
   useBreadcrumb,
@@ -37,6 +38,7 @@ export {
 export {
   useRevisions,
   useRegionRevisions,
+  useComparisonChanges,
   useDisplayImage,
   useRevisionImage,
 } from './model/revisionSelectors';

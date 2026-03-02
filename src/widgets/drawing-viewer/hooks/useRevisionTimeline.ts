@@ -43,27 +43,32 @@ export function useRevisionTimeline(): {
     version: string;
   } | null>(null);
 
-  const regionRevVersion = selectedRegion
-    ? regionRevOverride?.region === selectedRegion
-      ? regionRevOverride.version
-      : (regionRevisions[regionRevisions.length - 1]?.version ?? null)
-    : null;
-
-  const handleRegionRevSelect = (version: string) => {
-    if (selectedRegion) {
-      setRegionRevOverride({ region: selectedRegion, version });
-    }
-  };
-
   const handleCompare = (version: string) => {
     const left = selectedRevision ?? revisions[revisions.length - 1]?.version;
     if (left) {
       enterComparison(left, version);
     }
   };
-  const regionRevData = selectedRegion
-    ? regionRevisions.find((r) => r.version === regionRevVersion)
-    : null;
+
+  if (!selectedRegion) {
+    return {
+      timelineProps: {
+        revisions,
+        selected: selectedRevision,
+        onSelect: selectRevision,
+        onCompare: handleCompare,
+        showCompare: true,
+      },
+      regionOverlay: null,
+    };
+  }
+
+  const regionRevVersion =
+    regionRevOverride?.region === selectedRegion
+      ? regionRevOverride.version
+      : (regionRevisions[regionRevisions.length - 1]?.version ?? null);
+
+  const regionRevData = regionRevisions.find((r) => r.version === regionRevVersion) ?? null;
 
   const discData = drawing?.disciplines?.[selectedDiscipline ?? ''];
   const baseTransform = discData?.imageTransform;
@@ -78,13 +83,13 @@ export function useRevisionTimeline(): {
 
   return {
     timelineProps: {
-      revisions: selectedRegion ? regionRevisions : revisions,
-      selected: selectedRegion ? regionRevVersion : selectedRevision,
-      onSelect: selectedRegion ? handleRegionRevSelect : selectRevision,
+      revisions: regionRevisions,
+      selected: regionRevVersion,
+      onSelect: (version: string) => setRegionRevOverride({ region: selectedRegion, version }),
       onCompare: handleCompare,
-      title: selectedRegion ? `Region ${selectedRegion} 리비전` : undefined,
-      showCompare: !selectedRegion,
-      onClose: selectedRegion ? () => selectRegion(null) : undefined,
+      title: `Region ${selectedRegion} 리비전`,
+      showCompare: false,
+      onClose: () => selectRegion(null),
     },
     regionOverlay: regionRevData
       ? {

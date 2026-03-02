@@ -1,10 +1,8 @@
 import { getDisciplinePolygon, getRegionPolygons } from '../lib/polygonQueries';
-import { useDrawingStore } from './useDrawingStore';
-import { useSelectedDrawing } from './drawingSelectors';
+import { useSelectedDisciplineData } from './drawingSelectors';
 
 export function useDisciplinePolygon() {
-  const drawing = useSelectedDrawing();
-  const discipline = useDrawingStore((store) => store.selectedDiscipline);
+  const { drawing, discipline } = useSelectedDisciplineData();
 
   if (!drawing || !discipline) {
     return { polygon: null, regions: [] };

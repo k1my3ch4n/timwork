@@ -2,6 +2,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { useOverlayStore, useOverlayRenderData } from '@entities/drawing';
 import { OverlayControls } from '@features/overlay-controls';
 import OverlayEmptyState from './OverlayEmptyState';
+import OverlayLayerImage from './OverlayLayerImage';
 import ZoomControls from './ZoomControls';
 
 interface OverlayImageViewerProps {
@@ -26,24 +27,7 @@ export default function OverlayImageViewer({ alt }: OverlayImageViewerProps) {
             <TransformComponent wrapperClass="h-full">
               <div className="relative inline-block">
                 {overlayRenderData.map((layer) => (
-                  <img
-                    key={layer.disciplineName}
-                    src={layer.imageSrc}
-                    alt={`${alt} - ${layer.disciplineName}`}
-                    style={{
-                      opacity: layer.opacity,
-                      ...(layer.isBase
-                        ? {}
-                        : {
-                            position: 'absolute' as const,
-                            left: 0,
-                            top: 0,
-                            transformOrigin: '0 0',
-                            transform:
-                              layer.cssTransform !== 'none' ? layer.cssTransform : undefined,
-                          }),
-                    }}
-                  />
+                  <OverlayLayerImage key={layer.disciplineName} layer={layer} alt={alt} />
                 ))}
               </div>
             </TransformComponent>

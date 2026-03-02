@@ -31,6 +31,10 @@ export const useOverlayStore = create<OverlayState>((set, get) => ({
         drawingStore.selectDiscipline(baseDiscipline);
       }
     } else {
+      if (drawingStore.isComparisonMode) {
+        drawingStore.exitComparison();
+      }
+
       const layers: OverlayLayer[] = drawingStore.selectedDiscipline
         ? [{ disciplineName: drawingStore.selectedDiscipline, opacity: 1 }]
         : [];
